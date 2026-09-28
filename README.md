@@ -34,17 +34,7 @@ A private, local-first agentic AI workbench that handles general questions, docu
 - **Modular design:** Tools live in separate modules, so you can add new tools and routes.
 
 ## Demo / Screenshots
-
-Live demo: none yet.
-
-### Main interface
-![ASK main chat interface](docs/screenshots/Screenshot 2026-09-29 020630.png)
-
-### Document question answering
-![ASK answering a question about a PDF](docs/screenshots/document.png)
-
-### Coding workflow
-![ASK generating Python code](docs/screenshots/coding.png)
+Check on DOCS folder
 
 ## Architecture
 
