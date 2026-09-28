@@ -4,3 +4,7 @@ python-docx
 pypdf
 sentence-transformers
 faiss-cpu
+flask
+pillow
+pytesseract
+numpy
