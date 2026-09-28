@@ -18,7 +18,6 @@ from tools.ocr_tool import extract_text_from_image
 
 # LOCAL LLM
 
-print("🔥 THIS AGENT.PY IS LOADED 🔥")
 
 def ask_llm(prompt, model):
     start = time.perf_counter()
