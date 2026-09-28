@@ -28,7 +28,7 @@ A private, local-first agentic AI workbench that handles general questions, docu
 
 - **Automatic task routing:** Classifies each request as General, Document, Coding, or Image. You use one agent instead of switching tools.
 - **Local LLM inference:** Runs Qwen 2.5 models (`qwen2.5:1.5b` and `qwen2.5:3b`) through Ollama. No remote LLM API is required.
-- **Document understanding:** Extracts text from PDF and DOCX files, retrieves relevant passages, and answers questions locally.
+- **Document understanding:** Extracts text from PDF, DOCX and TXT files, retrieves relevant passages, and answers questions locally.
 - **Image understanding via OCR:** Extracts text from images with Tesseract and passes it to the local model.
 - **Coding assistant:** Generates Python code and supports a local execution workflow through a sandbox tool.
 - **Modular design:** Tools live in separate modules, so you can add new tools and routes.
