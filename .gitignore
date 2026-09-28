@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+
+uploads/
+
+tempCodeRunnerFile.py
+temp_code.py
+
+.env
+.env.*
+
+document/*.pdf
+data/*.txt

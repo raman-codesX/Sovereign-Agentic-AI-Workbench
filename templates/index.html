@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Sovereign AI Workbench</title>
+
+<style>
+
+:root{
+    --bg:#0d0e0b;
+    --panel:#141510;
+    --panel2:#1b1c16;
+    --line:#2a2b24;
+    --text:#e7e6df;
+    --muted:#8b8d80;
+    --accent:#3b82f6;
+    --accent-dim:#1e3a6e;
+    --user:#3b82f6;
+    --model-color:#e0a54a;
+    --radius:10px;
+    --mono:'IBM Plex Mono',
+           'SFMono-Regular',
+           Menlo,
+           Consolas,
+           monospace;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    height:100%;
+    margin:0;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--mono);
+}
+
+button,
+input{
+    font:inherit;
+}
+
+.app{
+    max-width:960px;
+    margin:auto;
+    padding:16px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* TOP BAR */
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 14px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+}
+
+.dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--accent);
+}
+
+.status{
+    font-size:11px;
+    color:var(--muted);
+}
+
+.btn,
+.iconbtn{
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text);
+    cursor:pointer;
+}
+
+.btn{
+    padding:6px 12px;
+    border-radius:8px;
+    font-size:11px;
+}
+
+.btn:hover,
+.iconbtn:hover{
+    background:var(--panel2);
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    display:flex;
+    gap:10px;
+    min-height:0;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:170px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.label{
+    font-size:10px;
+    color:var(--muted);
+    margin:6px 0 2px;
+}
+
+.navitem{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px;
+    border-radius:var(--radius);
+    font-size:12px;
+    cursor:pointer;
+    border:1px solid transparent;
+    color:var(--muted);
+    background:none;
+    width:100%;
+    text-align:left;
+}
+
+.navitem.active{
+    color:#dceeff;
+    border-color:#245b99;
+    background:#0c315b;
+}
+
+.model-box{
+    margin-top:6px;
+    padding:8px;
+    border-radius:var(--radius);
+    background:var(--panel2);
+    font-size:11px;
+}
+
+.model-box b{
+    display:block;
+    font-size:10px;
+    color:var(--muted);
+    font-weight:400;
+    margin-bottom:2px;
+}
+
+.footer-note{
+    margin-top:auto;
+    font-size:10px;
+    color:var(--muted);
+}
+
+/* CONTENT */
+
+.content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-width:0;
+}
+
+/* CHAT */
+
+.chatwrap{
+    flex:1;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px;
+    overflow:auto;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.msg{
+    max-width:75%;
+    padding:8px 12px;
+    border-radius:9px;
+    font-size:13px;
+    line-height:1.5;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+}
+
+.user{
+    align-self:flex-end;
+    background:var(--user);
+    color:white;
+}
+
+.agent{
+    align-self:flex-start;
+    background:var(--panel2);
+}
+
+.tag{
+    align-self:flex-start;
+    font-size:10px;
+    padding:3px 9px;
+    border-radius:99px;
+    border:1px solid var(--line);
+    color:var(--muted);
+}
+
+.file-chip{
+    align-self:flex-start;
+    font-size:11px;
+    padding:6px 10px;
+    border-radius:var(--radius);
+    background:var(--panel2);
+    color:var(--muted);
+}
+
+.local{
+    font-size:11px;
+    color:var(--muted);
+    padding:0 2px;
+}
+
+.empty{
+    color:var(--muted);
+    font-size:12px;
+    padding:20px;
+    text-align:center;
+}
+
+/* INPUT */
+
+.inputrow{
+    display:flex;
+    gap:8px;
+}
+
+.iconbtn{
+    width:38px;
+    height:38px;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    flex:none;
+}
+
+.chatinput{
+    flex:1;
+    min-width:0;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text);
+    border-radius:999px;
+    padding:0 16px;
+    height:38px;
+    font-size:13px;
+    outline:none;
+}
+
+.chatinput:focus{
+    border-color:var(--accent);
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+    .app{
+        padding:8px;
+    }
+
+    .sidebar{
+        width:120px;
+    }
+
+    .main{
+        gap:6px;
+    }
+
+    .msg{
+        max-width:90%;
+    }
+
+    .status{
+        display:none;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <div class="brand">
+            <span class="dot"></span>
+            sovereign://workbench
+        </div>
+
+        <div>
+
+            <span
+                class="status"
+                id="status"
+            >
+                local · offline-ready
+            </span>
+
+            <button
+                class="btn"
+                id="clear"
+                type="button"
+            >
+                clear
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="label">
+                workspace
+            </div>
+
+            <button
+                class="navitem active"
+                type="button"
+            >
+                &gt; ask agent
+            </button>
+
+            <div class="model-box">
+
+                <b>model</b>
+
+                <span style="color:var(--model-color)">
+                    qwen2.5-3b
+                </span>
+
+            </div>
+
+            <div class="footer-note">
+                ● zero data egress
+            </div>
+
+        </aside>
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+            <!-- CHAT -->
+
+            <div
+                class="chatwrap"
+                id="chat"
+            >
+
+                <div class="empty">
+                    ask a question, mode is detected automatically
+                </div>
+
+            </div>
+
+
+            <!-- LOCAL STATUS -->
+
+            <div class="local">
+                ● inference running locally · Ollama
+            </div>
+
+
+            <!-- INPUT -->
+
+            <div class="inputrow">
+
+                <button
+                    class="iconbtn"
+                    id="attach"
+                    type="button"
+                    title="attach file"
+                    aria-label="attach file"
+                >
+                    📎
+                </button>
+
+
+                <input
+                    class="chatinput"
+                    id="input"
+                    placeholder="&gt; type a command or question"
+                    autocomplete="off"
+                >
+
+
+                <button
+                    class="iconbtn"
+                    id="send"
+                    type="button"
+                    aria-label="send"
+                >
+                    →
+                </button>
+
+            </div>
+
+
+            <!-- HIDDEN FILE INPUT -->
+
+            <input
+                type="file"
+                id="file"
+                hidden
+            >
+
+        </section>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ================================
+   ELEMENTS
+================================ */
+
+const chat = document.getElementById("chat");
+
+const input = document.getElementById("input");
+
+const file = document.getElementById("file");
+
+const sendButton = document.getElementById("send");
+
+const attachButton = document.getElementById("attach");
+
+const clearButton = document.getElementById("clear");
+
+const status = document.getElementById("status");
+
+
+/* ================================
+   STATE
+================================ */
+
+let attachedFile = null;
+
+/*
+    Conversation history.
+
+    Example:
+
+    [
+        {
+            role: "user",
+            content: "hello"
+        },
+        {
+            role: "assistant",
+            content: "Hello!"
+        }
+    ]
+*/
+
+let messages = [];
+
+
+/* ================================
+   ADD MESSAGE
+================================ */
+
+function add(text, cls) {
+
+    const empty = chat.querySelector(".empty");
+
+    if (empty) {
+        empty.remove();
+    }
+
+    const element = document.createElement("div");
+
+    element.className = "msg " + cls;
+
+    element.textContent = text;
+
+    chat.appendChild(element);
+
+    chat.scrollTop = chat.scrollHeight;
+}
+
+
+/* ================================
+   ADD ROUTING TAG
+================================ */
+
+function tag(task) {
+
+    const element = document.createElement("div");
+
+    element.className = "tag";
+
+    element.textContent =
+        "●  routed: " + task;
+
+    chat.appendChild(element);
+
+    chat.scrollTop = chat.scrollHeight;
+}
+
+
+/* ================================
+   UPLOAD FILE
+================================ */
+
+async function upload() {
+
+    if (!file.files.length) return;
+
+    const fd = new FormData();
+
+    fd.append(
+        'file',
+        file.files[0]
+    );
+
+    const r = await fetch(
+        '/api/upload',
+        {
+            method: 'POST',
+            body: fd
+        }
+    );
+
+    const data = await r.json();
+
+    if (!r.ok) {
+        throw Error(
+            data.error || 'upload failed'
+        );
+    }
+
+    // Save filename
+    attachedFile = data.name;
+
+
+    // Detect file type
+    const fileName = data.name.toLowerCase();
+
+    let fileType = 'file';
+
+    if (
+        /\.(jpg|jpeg|png|webp)$/i.test(fileName)
+    ) {
+
+        fileType = 'image';
+
+    } else if (
+        /\.pdf$/i.test(fileName)
+    ) {
+
+        fileType = 'PDF document';
+
+    } else if (
+        /\.(txt|md|docx)$/i.test(fileName)
+    ) {
+
+        fileType = 'document';
+    }
+
+
+    // Save attachment information
+    // in conversation history
+    messages.push({
+        role: 'system',
+        content:
+            'A ' +
+            fileType +
+            ' is currently attached: ' +
+            data.name
+    });
+
+
+    // Show attachment in UI
+    add(
+        '📄 ' +
+        data.name +
+        ' attached',
+        'file-chip'
+    );
+}
+
+
+/* ================================
+   SEND MESSAGE
+================================ */
+
+async function send() {
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    add(text, 'user');
+    input.value = '';
+
+    document.getElementById('status').textContent =
+        'local · thinking...';
+
+    messages.push({
+        role: 'user',
+        content: text
+    });
+
+    try {
+        const r = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: text,
+                messages: messages,
+                attached_file: attachedFile
+            })
+        });
+
+        if (!r.ok) {
+            const errorText = await r.text();
+            throw new Error(errorText || 'request failed');
+        }
+
+        // Create ONE empty assistant bubble
+        const assistantDiv =
+            document.createElement('div');
+
+        assistantDiv.className = 'msg agent';
+
+        chat.appendChild(assistantDiv);
+
+        const reader = r.body.getReader();
+        const decoder = new TextDecoder();
+
+        let fullAnswer = '';
+
+        while (true) {
+
+            const { value, done } =
+                await reader.read();
+
+            if (done) break;
+
+            const chunk =
+                decoder.decode(value, {
+                    stream: true
+                });
+
+            fullAnswer += chunk;
+
+            // Update same bubble
+            assistantDiv.textContent =
+                fullAnswer;
+
+            chat.scrollTop =
+                chat.scrollHeight;
+        }
+
+        // Save completed answer
+        messages.push({
+            role: 'assistant',
+            content: fullAnswer
+        });
+
+        const task =
+            r.headers.get('X-Task');
+
+        if (task) {
+            tag(task);
+        }
+
+    } catch (e) {
+
+        console.error(e);
+
+        add(
+            'Error: ' + e.message,
+            'agent'
+        );
+
+    } finally {
+
+        document.getElementById('status').textContent =
+            'local · offline-ready';
+    }
+}
+
+/* ================================
+   SEND BUTTON
+================================ */
+
+sendButton.addEventListener(
+    "click",
+    send
+);
+
+
+/* ================================
+   ENTER KEY
+================================ */
+
+input.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            send();
+
+        }
+
+    }
+);
+
+
+/* ================================
+   ATTACH BUTTON
+================================ */
+
+attachButton.addEventListener(
+    "click",
+    function() {
+
+        file.click();
+
+    }
+);
+
+
+/* ================================
+   FILE SELECTED
+================================ */
+
+file.addEventListener(
+    "change",
+    upload
+);
+
+
+/* ================================
+   CLEAR CHAT
+================================ */
+
+clearButton.addEventListener(
+    "click",
+    function() {
+
+        /*
+            Clear UI
+        */
+
+        chat.innerHTML =
+            '<div class="empty">' +
+            'ask a question, mode is detected automatically' +
+            '</div>';
+
+
+        /*
+            Clear conversation memory
+        */
+
+        messages = [];
+
+
+        /*
+            Clear attached file
+        */
+
+        attachedFile = null;
+
+
+        /*
+            Reset file input
+        */
+
+        file.value = "";
+
+
+        status.textContent =
+            "local · offline-ready";
+
+    }
+);
+
+</script>
+
+</body>
+</html>
