@@ -38,7 +38,7 @@ A private, local-first agentic AI workbench that handles general questions, docu
 Live demo: none yet.
 
 ### Main interface
-![ASK main chat interface](docs/screenshots/chat.png)
+![ASK main chat interface](docs/screenshots/Screenshot 2026-09-29 020630.png)
 
 ### Document question answering
 ![ASK answering a question about a PDF](docs/screenshots/document.png)
