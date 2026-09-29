@@ -35,13 +35,14 @@ A private, local-first agentic AI workbench that handles general questions, docu
 
 ## Demo / Screenshots
 
-Live demo: none yet.
+### Main interface
+![ASK main chat interface](docs/screenshots/chat.png)
 
-[ADD SCREENSHOT HERE: main chat interface]
+### Document question answering
+![ASK answering a question about a PDF](docs/screenshots/document.png)
 
-[ADD SCREENSHOT HERE: document question answering]
-
-[ADD SCREENSHOT HERE: coding workflow]
+### Coding workflow
+![ASK generating Python code](docs/screenshots/coding.png)
 
 ## Architecture
 
