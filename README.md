@@ -4,6 +4,7 @@ A private, local-first agentic AI workbench that handles general questions, docu
 
 ![Python](https://img.shields.io/badge/python-3.13.5-blue)
 ![Flask](https://img.shields.io/badge/backend-Flask-black)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Ollama](https://img.shields.io/badge/LLM%20runtime-Ollama-informational)
 
 ## Overview
